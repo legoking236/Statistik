@@ -1,5 +1,4 @@
 import math
-import Tkinter
 
 def mean(PassDataList):
     if len(PassDataList) == 0:
