@@ -307,6 +307,4 @@ menubar.add_cascade(label="Help", menu=helpmenu)
 
 window.config(menu=menubar)
 
-#test1 = BoxPlot(Graph, [33,44,56,72,13,45,99,81,23,33,47,16,8], data2=[23,44,51,32,65,88,94,23,45,61,54,90,32], color="green", color2="red")
-#test2 = BoxPlot(Graph, [33,44,56,72,13,45,99,81,23,33,47,16,8], data2=[33,44,56,72,13,45,99,81,23,33,47,16,8], color="green", color2="red")
 window.mainloop()
