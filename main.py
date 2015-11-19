@@ -307,4 +307,6 @@ menubar.add_cascade(label="Help", menu=helpmenu)
 
 window.config(menu=menubar)
 
+#histTest = Histogram(Graph, [31,22,15,11,12,34,22,15,67,28,92,15,181,172,152,134,114])
+
 window.mainloop()
