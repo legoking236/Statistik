@@ -162,7 +162,7 @@ class Histogram:
             index += 1
         return countedData
     def calcScale(self, axis):
-        if axis = 'x':
+        if axis == 'x':
             masterSizeXwoBuffer = self.parent_size[0] - self.bufferZone[0]*2
             scaleX = masterSizeWObuffer / self.binWidth
             return scaleX
