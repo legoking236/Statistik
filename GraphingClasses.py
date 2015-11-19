@@ -120,7 +120,58 @@ class Histogram:
         self.color = color
         self.bufferZone = bufferZone
         self.data = data
-
+        self.FindBinWidth()
+        self.dataCounted = self.countData()
+        self.scaleX = self.calcScale('x')
+        self.scaleY = self.calcScale('y')
+    def FindBinWidth(self):
+        dataMin = int(SummaryCalcs.minimum(self.data))
+        dataMax = int(SummaryCalcs.maximum(self.data))
+        dataRange = dataMax - dataMin
+        binWidth = 10
+        numToDiv = int(dataRange/binWidth)
+        while numToDiv > 10:
+            binWidth += 5
+            numToDiv = int(dataRange/binWidth)
+        self.binWidth = binWidth
+        #generate bin array
+        binArray = []
+        binVal = 0
+        while (len(binArray) == 0) or (binArray[-1] <= dataMax):
+            if len(binArray) == 0:
+                if binVal < dataMin < binVal+binWidth:
+                    binArray.append(binVal)
+                    binVal += binWidth
+                else:
+                    binVal += binWidth
+            else:
+                binArray.append(binVal)
+                binVal += binWidth
+        self.binArray = binArray
+    def countData(self):
+        countedData = []
+        index = 0
+        for binNum in self.binArray:
+            binNumCount = 0
+            for num in self.data:
+                if ((index == len(self.binArray)-1) and (binNum < num)) or (binNum < num < self.binArray[index+1]):
+                    binNumCount += 1
+                else:
+                    continue
+            countedData.append(binNumCount)
+            index += 1
+        return countedData
+    def calcScale(self, axis):
+        if axis = 'x':
+            masterSizeXwoBuffer = self.parent_size[0] - self.bufferZone[0]*2
+            scaleX = masterSizeWObuffer / self.binWidth
+            return scaleX
+        else:
+            masterSizeYwoBuffer = self.parent_size[1] - self.bufferZone[1]*2
+            scaleY = masterSizeYwoBuffer / SummaryCalcs.maximum(self.dataCounted)
+            return scaleY
+    def drawGraph(self):
+        pass
 class StackedBar:
     def __init__(self, master, data, master_size=[640, 640], color="black", bufferZone=[20, 20]):
         self.parent= master
