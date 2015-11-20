@@ -113,53 +113,14 @@ def ClrList2():
     listTwo.delete(0, END)
     summRecalc("L2")
 def DrawBoxPlotWindow():
-    stateR = False
-    def change_state():
-        if stateR:
-            for child in windowFrameRight.winfo_children():
-                child.configure(state="disable")
-        else:
-            for child in windowFrameRight.winfo_children():
-                child.configure(state="enable")
-
     Graph.delete("all")
     BoxPlotWindow = Toplevel()
     BoxPlotWindow.wm_title("Graph Box Plot")
-    TopFrame = Frame(BoxPlotWindow)
-    TwoSetsVar = IntVar()
-    TwoSets = Checkbutton(TopFrame, text="Double Box Plot?", variable=TwoSetsVar)
 
-    sidesFrame = Frame(BoxPlotWindow)
+    #FUCK THIS SHIT, FUCK IT ALL TO HELL, I WILL DO IT LATER
+    #UNTIL THEN I'M GOING TO WATCH 7 EPISODES OF MAD MEN AND
+    #SULK IN SELF PITTY
 
-    windowFrameLeft = Frame(sidesFrame)
-    FL_dataList = Listbox(windowFrameLeft, height=5, width=20)
-    for item in L1:
-        FL_dataList.insert(END, item)
-    FL_ColorChooseVar = StringVar()
-    FL_ColorChooseVar.set("Red")
-    FL_colorChooser = OptionMenu(windowFrameLeft, FL_ColorChooseVar, "Red", "Blue", "Green", "Yellow", "Pink", "Purple", "Grey", "Black")
-    windowFrameRight = Frame(sidesFrame)
-    FR_dataList = Listbox(windowFrameLeft, height=5, width=20)
-    for item in L2:
-        FR_dataList.insert(END, item)
-    FR_dataList.config(state="disable")
-    FR_ColorChooseVar = StringVar()
-    FR_ColorChooseVar.set("Blue")
-    FR_colorChooser = OptionMenu(windowFrameLeft, FR_ColorChooseVar, "Red", "Blue", "Green", "Yellow", "Pink", "Purple", "Grey", "Black")
-    lowerFrame = Frame(BoxPlotWindow)
-
-    TopFrame.pack()
-    TwoSets.pack()
-    sidesFrame.pack()
-    windowFrameLeft.pack(side=LEFT)
-    FL_dataList.pack()
-    FL_colorChooser.pack()
-    windowFrameRight.pack(side=RIGHT)
-    FR_dataList.pack()
-    FR_colorChooser.pack()
-    lowerFrame.pack()
-
-    TwoSetsVar.trace("w", change_state)
     tempButton = Button(BoxPlotWindow, text="Graph",
     command=lambda: BoxPlot(Graph, L1, data2=L2, color="red", color2="blue")).pack()
 
