@@ -119,7 +119,7 @@ def DrawBoxPlotWindow():
 
     #FUCK THIS SHIT, FUCK IT ALL TO HELL, I WILL DO IT LATER
     #UNTIL THEN I'M GOING TO WATCH 7 EPISODES OF MAD MEN AND
-    #SULK IN SELF PITTY
+    #SULK IN SELF PITY, FUCK YOU PYTHON
 
     tempButton = Button(BoxPlotWindow, text="Graph",
     command=lambda: BoxPlot(Graph, L1, data2=L2, color="red", color2="blue")).pack()
@@ -268,6 +268,6 @@ menubar.add_cascade(label="Help", menu=helpmenu)
 
 window.config(menu=menubar)
 
-#histTest = Histogram(Graph, [31,22,15,11,12,34,22,15,67,28,92,15,181,172,152,134,114])
+histTest = Histogram(Graph, [31,22,15,11,12,34,22,15,67,28,92,15,181,172,152,134,114])
 
 window.mainloop()
