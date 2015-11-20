@@ -114,16 +114,18 @@ class BoxPlot:
             numDist = self.max - self.min
             return int(draw_width/numDist)
 class Histogram:
-    def __init__(self, master, data, master_size=[640, 640], color="black", bufferZone=[20, 20]):
+    def __init__(self, master, data, master_size=[640, 640], color="red", axisColor="black", bufferZone=[20, 20]):
         self.parent= master
-        self.parent_size = master_size
+        self.master_size = master_size
         self.color = color
+        self.axisColor = axisColor
         self.bufferZone = bufferZone
         self.data = data
         self.FindBinWidth()
         self.dataCounted = self.countData()
         self.scaleX = self.calcScale('x')
         self.scaleY = self.calcScale('y')
+        self.drawGraph()
     def FindBinWidth(self):
         dataMin = int(SummaryCalcs.minimum(self.data))
         dataMax = int(SummaryCalcs.maximum(self.data))
@@ -163,15 +165,27 @@ class Histogram:
         return countedData
     def calcScale(self, axis):
         if axis == 'x':
-            masterSizeXwoBuffer = self.parent_size[0] - self.bufferZone[0]*2
-            scaleX = masterSizeWObuffer / self.binWidth
+            masterSizeXwoBuffer = self.master_size[0] - self.bufferZone[0]*2
+            scaleX = masterSizeXwoBuffer / len(self.binArray)
             return scaleX
         else:
-            masterSizeYwoBuffer = self.parent_size[1] - self.bufferZone[1]*2
+            masterSizeYwoBuffer = self.master_size[1] - self.bufferZone[1]*2
             scaleY = masterSizeYwoBuffer / SummaryCalcs.maximum(self.dataCounted)
             return scaleY
     def drawGraph(self):
-        pass
+        #draw axis
+        self.parent.create_line(self.bufferZone[0], self.master_size[1]-self.bufferZone[1], self.master_size[0]-self.bufferZone[0], self.master_size[1]-self.bufferZone[1], fill=self.axisColor)
+        self.parent.create_line(self.bufferZone[0], self.master_size[1]-self.bufferZone[1], self.bufferZone[0], self.bufferZone[1])
+        #draw scale marks on Y
+        pixlesCoveredY = 0
+        while pixlesCoveredY < self.master_size[1]-self.bufferZone[1]*2:
+            self.parent.create_line(self.bufferZone[0], (self.master_size[1] - self.bufferZone[1]) - pixlesCoveredY, self.bufferZone[0]-5, (self.master_size[1] - self.bufferZone[1]) - pixlesCoveredY)
+            pixlesCoveredY += self.scaleY
+        #draw scale marks on X
+        pixlesCoveredX = 0
+        while pixlesCoveredX < self.master_size[0]-self.bufferZone[0]*2:
+            self.parent.create_line(self.bufferZone[0] + pixlesCoveredX, self.master_size[1]-self.bufferZone[1], self.bufferZone[0] + pixlesCoveredX, self.master_size[1]-(self.bufferZone[1]-5))
+            pixlesCoveredX += self.scaleX
 class StackedBar:
     def __init__(self, master, data, master_size=[640, 640], color="black", bufferZone=[20, 20]):
         self.parent= master
