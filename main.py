@@ -84,6 +84,8 @@ def DelList(listIdent):
                 i+=1
             listOne.activate(listOne.nearest(selection[-1]-i))
             summRecalc("L1")
+            if GraphDrawn[2] == "L1" or GraphDrawn[2] == "BOTH":
+                GraphDrawn[1].reDraw(L1)
         except:
             pass
     else:
@@ -96,6 +98,8 @@ def DelList(listIdent):
                 i+=1
             listTwo.activate(listTwo.nearest(selection[-1]-i))
             summRecalc("L2")
+            if GraphDrawn[2] == "L2" or GraphDrawn[2] == "BOTH":
+                GraphDrawn[1].reDraw(L2)
         except:
             pass
 def AddDataOnPress(self):
@@ -121,13 +125,20 @@ def DrawBoxPlotWindow():
     Graph.delete("all")
     BoxPlotWindow = Toplevel()
     BoxPlotWindow.wm_title("Graph Box Plot")
-
+    listUsed = "L1"
+    def drawBox():
+        GraphDrawn[1] = BoxPlot(Graph, L1, data2=L2, color="red", color2="blue")
+        GraphDrawn[0] = True
+        if len(L1) > 0 and len(L2) > 0:
+            GraphDrawn[2] = "BOTH"
+        else:
+            GraphDrawn[2] = listUsed
     #FUCK THIS SHIT, FUCK IT ALL TO HELL, I WILL DO IT LATER
     #UNTIL THEN I'M GOING TO WATCH 7 EPISODES OF MAD MEN AND
     #SULK IN SELF PITY, FUCK YOU PYTHON
 
     tempButton = Button(BoxPlotWindow, text="Graph",
-    command=lambda: BoxPlot(Graph, L1, data2=L2, color="red", color2="blue")).pack()
+    command=drawBox).pack()
 def DrawHistogramWindow():
     Graph.delete("all")
     HistogramWindow = Toplevel()

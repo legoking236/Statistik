@@ -113,6 +113,35 @@ class BoxPlot:
         else:
             numDist = self.max - self.min
             return int(draw_width/numDist)
+    def reDraw(self, newData, newData2=[]):
+        self.data = newData
+        if len(newData2) > 0:
+            self.data2 = newData2
+            self.doubleBox = True
+            self.min2 = SummaryCalcs.minimum(self.data2)
+            self.q12 = SummaryCalcs.quar1(self.data2)
+            self.mean2 = SummaryCalcs.mean(self.data2)
+            self.q32 = SummaryCalcs.quar3(self.data2)
+            self.max2 = SummaryCalcs.maximum(self.data2)
+        else:
+            self.doubleBox = False
+        self.min = SummaryCalcs.minimum(self.data)
+        self.q1 = SummaryCalcs.quar1(self.data)
+        self.mean = SummaryCalcs.mean(self.data)
+        self.q3 = SummaryCalcs.quar3(self.data)
+        self.max = SummaryCalcs.maximum(self.data)
+        self.scale = self.calcScale()
+        if self.doubleBox:
+            if self.min - self.min2 > 0:
+                self.lower = 1
+            else:
+                self.lower = 2
+            if self.max - self.max2 > 0:
+                self.higher = 1
+            else:
+                self.higher = 2
+        self.parent.delete("all")
+        self.draw_plot()
 class Histogram:
     def __init__(self, master, data, master_size=[640, 640], color="red", axisColor="black", bufferZone=[20, 20]):
         self.parent= master
