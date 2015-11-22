@@ -194,6 +194,16 @@ class Histogram:
             else:
                 self.parent.create_rectangle((self.bufferZone[0]+self.scaleX*index), (self.master_size[1]-self.bufferZone[1])-(self.scaleY*self.dataCounted[index]), (self.bufferZone[0]+self.scaleX*(index+1)), self.master_size[1]-self.bufferZone[1])
                 index+=1
+    def reDraw(self, newData):
+        self.data = newData
+        self.binWidth = self.FindBinWidth()
+        self.dataCounted = self.countData()
+        self.scaleX = self.calcScale('x')
+        self.scaleY = self.calcScale('y')
+        self.parent.delete("all")
+        self.drawGraph()
+        print "drawn"
+
 class StackedBar:
     def __init__(self, master, data, master_size=[640, 640], color="black", bufferZone=[20, 20]):
         self.parent= master

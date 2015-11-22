@@ -18,6 +18,7 @@ L1 = []
 L2 = []
 
 DataSummSeld = "L1"
+GraphDrawn = [False, None, None]
 
 def SetDataSumm(self, self2, self3):
     global DataSummSeld
@@ -60,12 +61,16 @@ def AddData():
             listOne.insert(END, Data)
             listOne.see(END)
         summRecalc("L1")
+        if GraphDrawn[2] == "L1" or GraphDrawn[2] == "BOTH":
+            GraphDrawn[1].reDraw(L1)
     else:
         for Data in DataArr:
             L2.append(Data)
             listTwo.insert(END, Data)
             listTwo.see(END)
         summRecalc("L2")
+        if GraphDrawn[2] == "L2" or GraphDrawn[2] == "BOTH":
+            GraphDrawn[1].reDraw(L2)
 
     DataEntry.delete(0, END)
 def DelList(listIdent):
@@ -127,11 +132,16 @@ def DrawHistogramWindow():
     Graph.delete("all")
     HistogramWindow = Toplevel()
     HistogramWindow.wm_title("Graph Historgram")
+    def drawHist():
+        GraphDrawn[1] = Histogram(Graph, L1, color="red")
+        GraphDrawn[0] = True
+        GraphDrawn[2] = "L1"
+
 
     #Look at DrawBoxPlotWindow for why there is no interface
 
     tempButton = Button(HistogramWindow, text="Graph",
-    command=lambda: Histogram(Graph, L1, color="red")).pack()
+    command=drawHist).pack()
 
 WindowLeft = Frame(window)
 WindowRight = Frame(window, width=300 , height=655, bg="white")
