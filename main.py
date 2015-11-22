@@ -123,6 +123,15 @@ def DrawBoxPlotWindow():
 
     tempButton = Button(BoxPlotWindow, text="Graph",
     command=lambda: BoxPlot(Graph, L1, data2=L2, color="red", color2="blue")).pack()
+def DrawHistogramWindow():
+    Graph.delete("all")
+    HistogramWindow = Toplevel()
+    HistogramWindow.wm_title("Graph Historgram")
+
+    #Look at DrawBoxPlotWindow for why there is no interface
+
+    tempButton = Button(HistogramWindow, text="Graph",
+    command=lambda: Histogram(Graph, L1, color="red")).pack()
 
 WindowLeft = Frame(window)
 WindowRight = Frame(window, width=300 , height=655, bg="white")
@@ -226,7 +235,7 @@ menubar.add_cascade(label="Edit", menu=editmenu)
 graphmenu = Menu(menubar, tearoff=0)
 graphmenu.add_command(label="Scatter Plot")
 graphmenu.add_command(label="Box Plot", command=DrawBoxPlotWindow)
-graphmenu.add_command(label="Histogram")
+graphmenu.add_command(label="Histogram", command=DrawHistogramWindow)
 graphmenu.add_command(label="Stacked Bar Chart")
 graphmenu.add_separator()
 graphmenu.add_command(label="Clear Graph", command=lambda: Graph.delete("all"))
@@ -268,6 +277,6 @@ menubar.add_cascade(label="Help", menu=helpmenu)
 
 window.config(menu=menubar)
 
-histTest = Histogram(Graph, [31,22,15,11,12,34,22,15,67,28,92,15,181,172,152,134,114])
+#histTest = Histogram(Graph, [31,22,15,11,12,34,22,15,67,28,92,15,181,172,152,134,114])
 
 window.mainloop()
