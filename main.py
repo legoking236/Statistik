@@ -50,6 +50,8 @@ def AddData():
     if EntData == "snake":
         #will play snake on the canvas
         pass
+    elif EntData.lower() == "chuck norris":
+        EntData = "42"
     DataArr = EntData.split(',')
     for x in range(0, len(DataArr)):
         DataArr[x] = float(DataArr[x])
