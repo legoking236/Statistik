@@ -179,13 +179,21 @@ class Histogram:
         #draw scale marks on Y
         pixlesCoveredY = 0
         while pixlesCoveredY < self.master_size[1]-self.bufferZone[1]*2:
-            self.parent.create_line(self.bufferZone[0], (self.master_size[1] - self.bufferZone[1]) - pixlesCoveredY, self.bufferZone[0]-5, (self.master_size[1] - self.bufferZone[1]) - pixlesCoveredY)
+            self.parent.create_line(self.bufferZone[0], (self.master_size[1] - self.bufferZone[1]) - pixlesCoveredY, self.bufferZone[0]-5, (self.master_size[1] - self.bufferZone[1]) - pixlesCoveredY, fill=self.axisColor)
             pixlesCoveredY += self.scaleY
         #draw scale marks on X
         pixlesCoveredX = 0
         while pixlesCoveredX < self.master_size[0]-self.bufferZone[0]*2:
-            self.parent.create_line(self.bufferZone[0] + pixlesCoveredX, self.master_size[1]-self.bufferZone[1], self.bufferZone[0] + pixlesCoveredX, self.master_size[1]-(self.bufferZone[1]-5))
+            self.parent.create_line(self.bufferZone[0] + pixlesCoveredX, self.master_size[1]-self.bufferZone[1], self.bufferZone[0] + pixlesCoveredX, self.master_size[1]-(self.bufferZone[1]-5), fill=self.axisColor)
             pixlesCoveredX += self.scaleX
+        #draw bars
+        index = 0
+        while index < len(self.dataCounted)-1:
+            if self.dataCounted[index] == 0:
+                index+=1
+            else:
+                self.parent.create_rectangle((self.bufferZone[0]+self.scaleX*index), (self.master_size[1]-self.bufferZone[1])-(self.scaleY*self.dataCounted[index]), (self.bufferZone[0]+self.scaleX*(index+1)), self.master_size[1]-self.bufferZone[1])
+                index+=1
 class StackedBar:
     def __init__(self, master, data, master_size=[640, 640], color="black", bufferZone=[20, 20]):
         self.parent= master
