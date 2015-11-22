@@ -273,6 +273,13 @@ graphmenu.add_command(label="Clear Graph", command=lambda: Graph.delete("all"))
 graphmenu.add_command(label="Edit Graph")
 menubar.add_cascade(label="Graph", menu=graphmenu)
 
+samplemenu = Menu(menubar, tearoff=0)
+samplemenu.add_command(label="Simple Random Sample")
+samplemenu.add_command(label="Stratified Random Sample")
+samplemenu.add_separator()
+samplemenu.add_command(label="Random Number(s)")
+menubar.add_cascade(label="Sample", menu=samplemenu)
+
 drawmenu = Menu(menubar, tearoff=0)
 drawmenu.add_command(label="Pencil", command=drawing.pencil_tool)
 drawmenu.add_command(label="Line", command=drawing.line_tool)

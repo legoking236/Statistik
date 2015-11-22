@@ -9,11 +9,12 @@ class ScatterPlot:
         self.bufferZone = bufferZone
         self.data = data
 class BoxPlot:
-    def __init__(self, master, data, data2=[], master_size=[640, 640], color="black", color2="black", bufferZone=[20, 20]):
+    def __init__(self, master, data, data2=[], master_size=[640, 640], color="black", color2="black", axisColor="black", bufferZone=[20, 20]):
         self.parent = master
         self.master_size = master_size
         self.color = color
         self.color2 = color2
+        self.axisColor = axisColor
         self.bufferZone = bufferZone
         self.bufferZone2 = [bufferZone[0], bufferZone[1]+70]
         self.data = data
@@ -61,7 +62,9 @@ class BoxPlot:
         else:
             Min1Offset = 0
             Max1Offset = 0
-        # min & max
+        #draw axis
+        self.parent.create_line(self.bufferZone[0]-5, self.master_size[1]-(self.bufferZone[1]-5), self.master_size[0]-(self.bufferZone[0]-5), self.master_size[1]-(self.bufferZone[1]-5), fill=self.axisColor)
+        self.parent.create_line(self.bufferZone[0]-5, self.master_size[1]-(self.bufferZone[1]-5), self.bufferZone[0]-5, self.bufferZone[1]-5)
         # min & max
         self.parent.create_line(self.bufferZone[0] + Min1Offset, self.master_size[1] - (self.bufferZone[1]+50), self.bufferZone[0]+Min1Offset, self.master_size[1] - self.bufferZone[1], fill=self.color)
         self.parent.create_line(self.master_size[0] - (self.bufferZone[0] + Max1Offset), self.master_size[1] - (self.bufferZone[1]+50), self.master_size[0] - (self.bufferZone[0] + Max1Offset), self.master_size[1] - self.bufferZone[1], fill=self.color)
@@ -202,6 +205,14 @@ class Histogram:
             scaleY = masterSizeYwoBuffer / SummaryCalcs.maximum(self.dataCounted)
             return scaleY
     def drawGraph(self):
+        #draw bars
+        index = 0
+        while index < len(self.dataCounted)-1:
+            if self.dataCounted[index] == 0:
+                index+=1
+            else:
+                self.parent.create_rectangle((self.bufferZone[0]+self.scaleX*index), (self.master_size[1]-self.bufferZone[1])-(self.scaleY*self.dataCounted[index]), (self.bufferZone[0]+self.scaleX*(index+1)), self.master_size[1]-self.bufferZone[1], outline=self.color)
+                index+=1
         #draw axis
         self.parent.create_line(self.bufferZone[0], self.master_size[1]-self.bufferZone[1], self.master_size[0]-self.bufferZone[0], self.master_size[1]-self.bufferZone[1], fill=self.axisColor)
         self.parent.create_line(self.bufferZone[0], self.master_size[1]-self.bufferZone[1], self.bufferZone[0], self.bufferZone[1])
@@ -215,14 +226,6 @@ class Histogram:
         while pixlesCoveredX < self.master_size[0]-self.bufferZone[0]*2:
             self.parent.create_line(self.bufferZone[0] + pixlesCoveredX, self.master_size[1]-self.bufferZone[1], self.bufferZone[0] + pixlesCoveredX, self.master_size[1]-(self.bufferZone[1]-5), fill=self.axisColor)
             pixlesCoveredX += self.scaleX
-        #draw bars
-        index = 0
-        while index < len(self.dataCounted)-1:
-            if self.dataCounted[index] == 0:
-                index+=1
-            else:
-                self.parent.create_rectangle((self.bufferZone[0]+self.scaleX*index), (self.master_size[1]-self.bufferZone[1])-(self.scaleY*self.dataCounted[index]), (self.bufferZone[0]+self.scaleX*(index+1)), self.master_size[1]-self.bufferZone[1])
-                index+=1
     def reDraw(self, newData):
         self.data = newData
         self.binWidth = self.FindBinWidth()
