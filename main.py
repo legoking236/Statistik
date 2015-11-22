@@ -63,16 +63,20 @@ def AddData():
             listOne.insert(END, Data)
             listOne.see(END)
         summRecalc("L1")
-        if GraphDrawn[2] == "L1" or GraphDrawn[2] == "BOTH":
+        if GraphDrawn[2] == "L1":
             GraphDrawn[1].reDraw(L1)
+        elif GraphDrawn[2] == "BOTH":
+            GraphDrawn[1].reDraw(L1, L2)
     else:
         for Data in DataArr:
             L2.append(Data)
             listTwo.insert(END, Data)
             listTwo.see(END)
         summRecalc("L2")
-        if GraphDrawn[2] == "L2" or GraphDrawn[2] == "BOTH":
+        if GraphDrawn[2] == "L2":
             GraphDrawn[1].reDraw(L2)
+        elif GraphDrawn[2] == "BOTH":
+            GraphDrawn[1].reDraw(L1, L2)
 
     DataEntry.delete(0, END)
 def DelList(listIdent):
@@ -86,8 +90,10 @@ def DelList(listIdent):
                 i+=1
             listOne.activate(listOne.nearest(selection[-1]-i))
             summRecalc("L1")
-            if GraphDrawn[2] == "L1" or GraphDrawn[2] == "BOTH":
+            if GraphDrawn[2] == "L1":
                 GraphDrawn[1].reDraw(L1)
+            elif GraphDrawn[2] == "BOTH":
+                GraphDrawn[1].reDraw(L1, L2)
         except:
             pass
     else:
@@ -100,8 +106,10 @@ def DelList(listIdent):
                 i+=1
             listTwo.activate(listTwo.nearest(selection[-1]-i))
             summRecalc("L2")
-            if GraphDrawn[2] == "L2" or GraphDrawn[2] == "BOTH":
+            if GraphDrawn[2] == "L2":
                 GraphDrawn[1].reDraw(L2)
+            elif GraphDrawn[2] == "BOTH":
+                GraphDrawn[1].reDraw(L1, L2)
         except:
             pass
 def AddDataOnPress(self):
