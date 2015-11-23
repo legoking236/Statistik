@@ -9,13 +9,55 @@ import math
 
 class ScatterPlot:
     def __init__(self, master, data, data2, master_size=[640, 640], color="red", axisColor="black", bufferZone=[20, 20]):
-        self.parent= master
+        self.parent = master
         self.master_size = master_size
         self.color = color
         self.axisColor = axisColor
         self.bufferZone = bufferZone
-        self.dataX = data
-        self.dataY = data2
+        self.dataX = []
+        for item in data:
+            self.dataX.append(item)
+        self.dataY = []
+        for item in data2:
+            self.dataY.append(item)
+        if len(self.dataX) > len(self.dataY):
+            diff = len(self.dataX) - len(self.dataY)
+            for i in range(0, diff):
+                self.dataY.append(0)
+        elif len(self.dataX) < len(self.dataY):
+            diff = len(self.dataY) - len(self.dataX)
+            for i in range(0, diff):
+                self.dataX.append(0)
+        self.scaleX = self.calcScale('x')
+        self.scaleY = self.calcScale('y')
+        self.drawPlot()
+    def calcScale(self, scale):
+        if scale == 'x':
+            Xrange = SummaryCalcs.maximum(self.dataX)
+            if Xrange == 0:
+                return 1
+            return (self.master_size[0]-self.bufferZone[0]*2)/Xrange
+        else:
+            Yrange = SummaryCalcs.maximum(self.dataY)
+            if Yrange == 0:
+                return 1
+            return (self.master_size[1]-self.bufferZone[1]*2)/Yrange
+    def drawPlot(self):
+        #draw axis
+        self.parent.create_line(self.bufferZone[0], self.master_size[1]-(self.bufferZone[1]), self.master_size[0]-(self.bufferZone[0]), self.master_size[1]-(self.bufferZone[1]), fill=self.axisColor)
+        self.parent.create_line(self.bufferZone[0], self.master_size[1]-(self.bufferZone[1]), self.bufferZone[0], self.bufferZone[1])
+
+        for i in range(0, len(self.dataX)):
+            Xcord = (self.bufferZone[0]) + (self.dataX[i] * self.scaleX)
+            Ycord = (self.master_size[1] - self.bufferZone[1]) - (self.dataY[i] * self.scaleY)
+            self.parent.create_rectangle(int(Xcord)-2, int(Ycord)-2, int(Xcord)+2, int(Ycord)+2, outline=self.color, fill=self.color)
+    def reDraw(self, newData, newData2):
+        self.dataX = []
+        for item in newData:
+            self.dataX.append(item)
+        self.dataY = []
+        for item in newData2:
+            self.dataY.append(item)
         self.scaleX = self.calcScale('x')
         self.scaleY = self.calcScale('y')
         if len(self.dataX) > len(self.dataY):
@@ -26,25 +68,8 @@ class ScatterPlot:
             diff = len(self.dataY) - len(self.dataX)
             for i in range(0, diff):
                 self.dataX.append(0)
+        self.parent.delete("all")
         self.drawPlot()
-    def calcScale(self, scale):
-        if scale == 'x':
-            Xrange = SummaryCalcs.maximum(self.dataX)
-            return (self.master_size[0]-self.bufferZone[0]*2)/Xrange
-        else:
-            Yrange = SummaryCalcs.maximum(self.dataY)
-            return (self.master_size[1]-self.bufferZone[1]*2)/Yrange
-    def drawPlot(self):
-        #draw axis
-        self.parent.create_line(self.bufferZone[0], self.master_size[1]-(self.bufferZone[1]), self.master_size[0]-(self.bufferZone[0]), self.master_size[1]-(self.bufferZone[1]), fill=self.axisColor)
-        self.parent.create_line(self.bufferZone[0], self.master_size[1]-(self.bufferZone[1]), self.bufferZone[0], self.bufferZone[1])
-
-        for i in range(0, len(self.dataX)):
-            Xcord = (self.bufferZone[0]) + (self.dataX[i] * self.scaleX)
-            Ycord = (self.master_size[1] - self.bufferZone[1]) - (self.dataY[i] * self.scaleY)
-            print str(Xcord) + "," + str(Ycord)
-            self.parent.create_rectangle(int(Xcord)-2, int(Ycord)-2, int(Xcord)+2, int(Ycord)+2, outline=self.color, fill=self.color)
-
 class BoxPlot:
     def __init__(self, master, data, data2=[], master_size=[640, 640], color="black", color2="black", axisColor="black", bufferZone=[20, 20]):
         self.parent = master
