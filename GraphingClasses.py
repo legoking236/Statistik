@@ -162,10 +162,16 @@ class Histogram:
         dataMin = int(SummaryCalcs.minimum(self.data))
         dataMax = int(SummaryCalcs.maximum(self.data))
         dataRange = dataMax - dataMin
-        binWidth = 10
+        binWidth = 1
+        if dataRange <= 10:
+            maxBins = 3
+            binInc = 1
+        else:
+            maxBins = 10
+            binInc = 5
         numToDiv = int(dataRange/binWidth)
-        while numToDiv > 10:
-            binWidth += 5
+        while numToDiv > maxBins:
+            binWidth += binInc
             numToDiv = int(dataRange/binWidth)
         self.binWidth = binWidth
         #generate bin array
@@ -173,7 +179,7 @@ class Histogram:
         binVal = 0
         while (len(binArray) == 0) or (binArray[-1] <= dataMax):
             if len(binArray) == 0:
-                if binVal < dataMin < binVal+binWidth:
+                if binVal <= dataMin < binVal+binWidth:
                     binArray.append(binVal)
                     binVal += binWidth
                 else:
