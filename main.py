@@ -1,6 +1,6 @@
 """
 Statistik
-v 0.5.6
+v 0.5.18
 (c) 2015 Alex Probst
 """
 
@@ -164,6 +164,21 @@ def DrawHistogramWindow():
     tempButton = Button(HistogramWindow, text="Graph",
     command=drawHist).pack()
 
+def DrawScatterPlotWindow():
+    Graph.delete("all")
+    ScatterPlotWindow = Toplevel()
+    ScatterPlotWindow.wm_title("Graph Scatter Plot")
+    def drawScatter():
+        GraphDrawn[1] = ScatterPlot(Graph, L1, L2, color="red")
+        GraphDrawn[0] = True
+        GraphDrawn[2] = "BOTH"
+
+
+    #Look at DrawBoxPlotWindow for why there is no interface
+
+    tempButton = Button(ScatterPlotWindow, text="Graph",
+    command=drawScatter).pack()
+
 WindowLeft = Frame(window)
 WindowRight = Frame(window, width=300 , height=655, bg="white")
 
@@ -264,7 +279,7 @@ editmenu.add_command(label="Clear L2", command=ClrList2)
 menubar.add_cascade(label="Edit", menu=editmenu)
 
 graphmenu = Menu(menubar, tearoff=0)
-graphmenu.add_command(label="Scatter Plot")
+graphmenu.add_command(label="Scatter Plot", command=DrawScatterPlotWindow)
 graphmenu.add_command(label="Box Plot", command=DrawBoxPlotWindow)
 graphmenu.add_command(label="Histogram", command=DrawHistogramWindow)
 graphmenu.add_command(label="Stacked Bar Chart")
@@ -316,5 +331,7 @@ menubar.add_cascade(label="Help", menu=helpmenu)
 window.config(menu=menubar)
 
 #histTest = Histogram(Graph, [31,22,15,11,12,34,22,15,67,28,92,15,181,172,152,134,114])
+#14.2,16.4,11.9,15.2,18.5,22.1,19.4,25.1,23.4,18.1,22.6,17.2
+#215,325,185,332,406,522,412,614,544,421,445,408
 
 window.mainloop()

@@ -1,13 +1,50 @@
+"""
+Statistik
+v 0.5.18
+(c) 2015 Alex Probst
+"""
+
 import SummaryCalcs
 import math
 
 class ScatterPlot:
-    def __init__(self, master, data, master_size=[640, 640], color="black", bufferZone=[20, 20]):
+    def __init__(self, master, data, data2, master_size=[640, 640], color="red", axisColor="black", bufferZone=[20, 20]):
         self.parent= master
-        self.parent_size = master_size
+        self.master_size = master_size
         self.color = color
+        self.axisColor = axisColor
         self.bufferZone = bufferZone
-        self.data = data
+        self.dataX = data
+        self.dataY = data2
+        self.scaleX = self.calcScale('x')
+        self.scaleY = self.calcScale('y')
+        if len(self.dataX) > len(self.dataY):
+            diff = len(self.dataX) - len(self.dataY)
+            for i in range(0, diff):
+                self.dataY.append(0)
+        elif len(self.dataX) < len(self.dataY):
+            diff = len(self.dataY) - len(self.dataX)
+            for i in range(0, diff):
+                self.dataX.append(0)
+        self.drawPlot()
+    def calcScale(self, scale):
+        if scale == 'x':
+            Xrange = SummaryCalcs.maximum(self.dataX)
+            return (self.master_size[0]-self.bufferZone[0]*2)/Xrange
+        else:
+            Yrange = SummaryCalcs.maximum(self.dataY)
+            return (self.master_size[1]-self.bufferZone[1]*2)/Yrange
+    def drawPlot(self):
+        #draw axis
+        self.parent.create_line(self.bufferZone[0], self.master_size[1]-(self.bufferZone[1]), self.master_size[0]-(self.bufferZone[0]), self.master_size[1]-(self.bufferZone[1]), fill=self.axisColor)
+        self.parent.create_line(self.bufferZone[0], self.master_size[1]-(self.bufferZone[1]), self.bufferZone[0], self.bufferZone[1])
+
+        for i in range(0, len(self.dataX)):
+            Xcord = (self.bufferZone[0]) + (self.dataX[i] * self.scaleX)
+            Ycord = (self.master_size[1] - self.bufferZone[1]) - (self.dataY[i] * self.scaleY)
+            print str(Xcord) + "," + str(Ycord)
+            self.parent.create_rectangle(int(Xcord)-2, int(Ycord)-2, int(Xcord)+2, int(Ycord)+2, outline=self.color, fill=self.color)
+
 class BoxPlot:
     def __init__(self, master, data, data2=[], master_size=[640, 640], color="black", color2="black", axisColor="black", bufferZone=[20, 20]):
         self.parent = master

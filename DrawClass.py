@@ -1,3 +1,9 @@
+"""
+Statistik
+v 0.5.18
+(c) 2015 Alex Probst
+"""
+
 from Tkinter import *
 from os import *
 class Draw:
