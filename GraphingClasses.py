@@ -188,7 +188,7 @@ class Histogram:
         for binNum in self.binArray:
             binNumCount = 0
             for num in self.data:
-                if ((index == len(self.binArray)-1) and (binNum < num)) or (binNum < num < self.binArray[index+1]):
+                if ((index == len(self.binArray)-1) and (binNum < num)) or (binNum <= num < self.binArray[index+1]):
                     binNumCount += 1
                 else:
                     continue
@@ -234,7 +234,6 @@ class Histogram:
         self.scaleY = self.calcScale('y')
         self.parent.delete("all")
         self.drawGraph()
-        print "drawn"
 
 class StackedBar:
     def __init__(self, master, data, master_size=[640, 640], color="black", bufferZone=[20, 20]):
