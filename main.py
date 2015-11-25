@@ -48,8 +48,9 @@ def summRecalc(listIdent):
 def AddData():
     EntData = DataEntry.get()
     if EntData == "snake":
-        #will play snake on the canvas
-        pass
+        DataEntry.delete(0, END)
+        snake.snake(Graph)
+        return 0
     elif EntData.lower() == "chuck norris":
         EntData = "42"
     DataArr = EntData.split(',')
