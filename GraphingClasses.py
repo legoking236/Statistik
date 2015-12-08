@@ -31,6 +31,7 @@ class ScatterPlot:
         self.scaleX = self.calcScale('x')
         self.scaleY = self.calcScale('y')
         self.drawPlot()
+        self.LineOfBestFit()
     def calcScale(self, scale):
         if scale == 'x':
             Xrange = SummaryCalcs.maximum(self.dataX)
@@ -70,6 +71,30 @@ class ScatterPlot:
                 self.dataX.append(0)
         self.parent.delete("all")
         self.drawPlot()
+        self.LineOfBestFit()
+    def LineOfBestFit(self):
+        xBar = SummaryCalcs.mean(self.dataX)
+        yBar = SummaryCalcs.mean(self.dataY)
+        bigEQtop = 0
+        bigEQbottom = 0
+        for i in range(0, len(self.dataX)):
+            xEQ = self.dataX[i] - xBar
+            bigEQtop += (xEQ * (self.dataY[i] - yBar))
+            bigEQbottom += (xEQ * xEQ)
+        self.LBslope = bigEQtop / bigEQbottom
+        self.Bval = yBar - (self.LBslope * xBar)
+
+        print "y = " + str(round(self.LBslope,3)) + "x+" + str(round(self.Bval,3))
+        self.drawLB()
+    def drawLB(self):
+        xSize = (self.master_size[0] - (self.bufferZone[0]*2))
+        Ystart = (self.master_size[1] - self.bufferZone[1]) - (self.Bval * self.scaleY)
+        Xstart = self.bufferZone[0]
+
+        Yend = (self.master_size[1] - self.bufferZone[1]) - (self.LBslope * (xSize/self.scaleX) + self.Bval)
+        Xend = xSize
+
+        self.parent.create_line(Xstart, Ystart, Xend, Yend, fill="blue")
 class BoxPlot:
     def __init__(self, master, data, data2=[], master_size=[640, 640], color="black", color2="black", axisColor="black", bufferZone=[20, 20]):
         self.parent = master
