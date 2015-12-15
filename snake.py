@@ -49,7 +49,6 @@ class snake:
     def keyPress(self, event):
         print repr(event.keysym)
         if repr(event.keysym) in self.validDirs:
-            print "hi"
             if repr(event.keysym) == 'w' or repr(event.keysym) == 'Up':
                 self.validDirs = ['a', 'd', 'Left', 'Right']
                 self.pieces[1].direction = 'u'
@@ -63,7 +62,7 @@ class snake:
                 self.validDirs = ['w', 's', 'Up', 'Down']
                 self.pieces[1].direction = 'r'
             else:
-                print ":()"
+                pass
         else:
             pass
     def playGame(self, event):

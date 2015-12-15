@@ -8,7 +8,7 @@ import SummaryCalcs
 import math
 
 class ScatterPlot:
-    def __init__(self, master, data, data2, master_size=[640, 640], color="red", axisColor="black", bufferZone=[20, 20]):
+    def __init__(self, master, data, data2, master_size=[640, 640], color="red", axisColor="black", bufferZone=[20, 20], LSRL=True):
         self.parent = master
         self.master_size = master_size
         self.color = color
@@ -30,8 +30,10 @@ class ScatterPlot:
                 self.dataX.append(0)
         self.scaleX = self.calcScale('x')
         self.scaleY = self.calcScale('y')
+        self.LSRL = LSRL
         self.drawPlot()
-        self.LineOfBestFit()
+        if self.LSRL:
+            self.LineOfBestFit()
     def calcScale(self, scale):
         if scale == 'x':
             Xrange = SummaryCalcs.maximum(self.dataX)
@@ -71,7 +73,8 @@ class ScatterPlot:
                 self.dataX.append(0)
         self.parent.delete("all")
         self.drawPlot()
-        self.LineOfBestFit()
+        if self.LSRL:
+            self.LineOfBestFit()
     def LineOfBestFit(self):
         xBar = SummaryCalcs.mean(self.dataX)
         yBar = SummaryCalcs.mean(self.dataY)
